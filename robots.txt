@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://barcs-manani.github.io/sitemap.xml
