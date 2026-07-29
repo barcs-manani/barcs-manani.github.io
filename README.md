@@ -1,11 +1,11 @@
 # Portfolio template — customization notes
 
-Single-file, no build step: `index.html` has everything inline (CSS + JS), so you can
+Basic HTML & CSS, no build step: `index.html` has HTML + JS inline, styled by `style.css`, so you can
 push it straight to GitHub Pages.
 
 ## Positioning choice (read this first)
 
-Your resume is EEE on paper but software dev in practice. The template leans into that
+My resume is EEE on paper but software dev in practice. The template leans into that
 on purpose instead of hiding it:
 
 - **Hero, About, Skills, Projects** all lead with the software stack (FastAPI, React,
