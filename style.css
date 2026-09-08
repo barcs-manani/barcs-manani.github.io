@@ -930,6 +930,17 @@ nav.links a:hover {
     margin-top: 32px;
 }
 
+.contact-links .btn{
+    display: flex;
+    gap: 10px;
+}
+
+.contact-icon-span {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+}
+
 footer {
     padding: 32px 0 48px;
     text-align: center;
