@@ -211,9 +211,6 @@ nav.links a:hover {
     display: none;
     background: none;
     border: none;
-    color: var(--text);
-    font-size: 1.4rem;
-    cursor: pointer;
 }
 
 @media (max-width: 720px) {
@@ -236,6 +233,13 @@ nav.links a:hover {
 
     .nav-toggle {
         display: block;
+        width: 34px;
+    }
+
+    .nav-toggle .nav-toggle-icon-span {
+        color: var(--text);
+        font-size: 1.4rem;
+        cursor: pointer;
     }
 }
 
@@ -930,7 +934,7 @@ nav.links a:hover {
     margin-top: 32px;
 }
 
-.contact-links .btn{
+.contact-links .btn {
     display: flex;
     gap: 10px;
 }
