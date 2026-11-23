@@ -1,5 +1,5 @@
 /* =========================================================
-     TOKENS — the whole visual identity lives here
+   TOKENS
 ========================================================= */
 :root {
     --bg: #0c1118;
@@ -9,17 +9,12 @@
     --text: #e8edf5;
     --text-dim: #9aa7bd;
     --text-faint: #5b6883;
-
     --signal: #49e0c4;
-    /* trace / accent — "signal" teal */
     --signal-dim: #2a8a78;
     --warn: #f2a65a;
-    /* secondary accent — amber, sparing */
-
     --font-display: 'Space Grotesk', 'Inter', sans-serif;
     --font-body: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
-
     --max-w: 1080px;
     --radius: 10px;
 }
@@ -84,8 +79,32 @@ p {
     padding: 0 24px;
 }
 
-.mono {
+.skip {
+    position: absolute;
+    left: -999px;
+    top: 8px;
+    z-index: 200;
+    background: var(--signal);
+    color: #06110f;
+    padding: 8px 14px;
+    border-radius: 6px;
     font-family: var(--font-mono);
+    font-size: .85rem;
+}
+
+.skip:focus {
+    left: 8px;
+}
+
+.progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    z-index: 300;
+    background: var(--signal);
+    box-shadow: 0 0 10px var(--signal);
 }
 
 .eyebrow {
@@ -136,8 +155,8 @@ section {
 }
 
 /* =========================================================
-     NAV
-  ========================================================= */
+   NAV
+========================================================= */
 header.site-nav {
     position: fixed;
     top: 0;
@@ -168,6 +187,10 @@ header.site-nav {
     gap: 8px;
 }
 
+a.brand:hover {
+    text-decoration: none;
+}
+
 .brand .dot {
     width: 8px;
     height: 8px;
@@ -188,7 +211,8 @@ nav.links a {
     font-family: var(--font-mono);
 }
 
-nav.links a:hover {
+nav.links a:hover,
+nav.links a.active {
     color: var(--signal);
     text-decoration: none;
 }
@@ -244,13 +268,33 @@ nav.links a:hover {
 }
 
 /* =========================================================
-     HERO
-  ========================================================= */
+   HERO
+========================================================= */
 .hero {
     min-height: 100svh;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     padding-top: 90px;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    opacity: .28;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 70% 35%, #000 20%, transparent 75%);
+    mask-image: radial-gradient(ellipse 70% 60% at 70% 35%, #000 20%, transparent 75%);
+}
+
+.hero .wrap {
+    position: relative;
+    width: 100%;
 }
 
 .hero-grid {
@@ -271,6 +315,7 @@ nav.links a:hover {
     font-weight: 700;
     line-height: 1.05;
     letter-spacing: -0.01em;
+    text-wrap: balance;
 }
 
 .hero h1 .accent {
@@ -310,6 +355,11 @@ nav.links a:hover {
     transition: transform .15s ease, background .2s ease, border-color .2s ease;
 }
 
+button.btn {
+    background: none;
+    cursor: pointer;
+}
+
 .btn-primary {
     background: var(--signal);
     color: #06110f;
@@ -333,7 +383,7 @@ nav.links a:hover {
     text-decoration: none;
 }
 
-/* terminal card */
+/* terminal */
 .terminal {
     background: var(--bg-panel);
     border: 1px solid var(--line);
@@ -377,6 +427,7 @@ nav.links a:hover {
 .terminal-bar .path {
     font-family: var(--font-mono);
     font-size: 0.75rem;
+    font-weight: 400;
     color: var(--text-faint);
     margin-left: 6px;
 }
@@ -403,12 +454,14 @@ nav.links a:hover {
     display: block;
 }
 
-.terminal-body .tag {
+.terminal-body .note {
     color: var(--warn);
+    margin-left: 6px;
+    font-size: .78rem;
 }
 
 #type-target::after {
-    content: "▍";
+    content: "\258D";
     color: var(--signal);
     animation: blink 1s step-end infinite;
 }
@@ -431,9 +484,62 @@ nav.links a:hover {
     }
 }
 
+/* stats strip */
+.stats {
+    list-style: none;
+    margin: 64px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-panel);
+    overflow: hidden;
+}
+
+.stats li {
+    padding: 22px 24px;
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stats li:last-child {
+    border-right: none;
+}
+
+.stats b {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--signal);
+    line-height: 1;
+}
+
+.stats span {
+    color: var(--text-dim);
+    font-size: .82rem;
+    font-family: var(--font-mono);
+}
+
+@media (max-width: 720px) {
+    .stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .stats li:nth-child(2) {
+        border-right: none;
+    }
+
+    .stats li:nth-child(-n+2) {
+        border-bottom: 1px solid var(--line);
+    }
+}
+
 /* =========================================================
-     ABOUT
-  ========================================================= */
+   ABOUT
+========================================================= */
 .about-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -459,6 +565,12 @@ nav.links a:hover {
 .about-grid strong {
     color: var(--text);
     font-weight: 600;
+}
+
+.about-title {
+    max-width: 20ch;
+    text-wrap: balance;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
 }
 
 .fact-list {
@@ -496,9 +608,37 @@ nav.links a:hover {
     font-size: 0.85rem;
 }
 
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--signal);
+    border: 1px solid var(--signal-dim);
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(73, 224, 196, .07);
+}
+
+.fact-list .badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--signal);
+    animation: pulse 2.4s ease-in-out infinite;
+}
+
+.edu-org .badge {
+    margin-left: 6px;
+    padding: 1px 8px;
+    font-size: .7rem;
+}
+
 /* =========================================================
-     EXPERIENCE — signature: vertical signal trace + nodes
-  ========================================================= */
+   EXPERIENCE
+========================================================= */
 .timeline {
     position: relative;
     padding-left: 40px;
@@ -546,6 +686,10 @@ nav.links a:hover {
     background: var(--signal);
 }
 
+.t-item:first-child .t-node {
+    animation: pulse 2.4s ease-in-out infinite;
+}
+
 .t-item.dim .t-node {
     border-color: var(--text-faint);
 }
@@ -583,6 +727,7 @@ nav.links a:hover {
 .t-link {
     font-family: var(--font-mono);
     font-size: 0.78rem;
+    margin-top: 10px;
 }
 
 .t-list {
@@ -601,7 +746,7 @@ nav.links a:hover {
 }
 
 .t-list li::before {
-    content: "›";
+    content: "\203A";
     position: absolute;
     left: 0;
     color: var(--signal);
@@ -631,6 +776,10 @@ nav.links a:hover {
     color: var(--text-dim);
 }
 
+.foundations-toggle summary:hover {
+    color: var(--signal);
+}
+
 .foundations-toggle summary::-webkit-details-marker {
     display: none;
 }
@@ -643,7 +792,7 @@ nav.links a:hover {
 }
 
 .foundations-toggle[open] summary::before {
-    content: "–";
+    content: "\2013";
 }
 
 .foundations-toggle .fnote {
@@ -696,8 +845,8 @@ nav.links a:hover {
 }
 
 /* =========================================================
-     SKILLS
-  ========================================================= */
+   SKILLS
+========================================================= */
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -747,17 +896,27 @@ nav.links a:hover {
     border-color: var(--signal-dim);
 }
 
-.skill-card.secondary {
-    opacity: 0.9;
+.skill-card.eng {
+    border-color: rgba(242, 166, 90, .35);
+    background: linear-gradient(180deg, rgba(242, 166, 90, .06), var(--bg-panel) 60%);
 }
 
-.skill-card.secondary h3 {
+.skill-card.eng:hover {
+    border-color: var(--warn);
+}
+
+.skill-card.eng h3 {
     color: var(--warn);
 }
 
+.skill-card.eng .tag:hover {
+    color: var(--warn);
+    border-color: var(--warn);
+}
+
 /* =========================================================
-     PROJECTS
-  ========================================================= */
+   PROJECTS
+========================================================= */
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -779,6 +938,17 @@ nav.links a:hover {
     transform: translateY(-4px);
     border-color: var(--signal-dim);
     box-shadow: 0 20px 40px -24px rgba(73, 224, 196, 0.25);
+}
+
+.project-card.featured {
+    border-color: var(--signal-dim);
+    background: linear-gradient(180deg, rgba(73, 224, 196, .05), var(--bg-panel) 55%);
+}
+
+@media (min-width: 900px) {
+    .project-card.featured {
+        grid-column: span 2;
+    }
 }
 
 .project-top {
@@ -836,19 +1006,9 @@ nav.links a:hover {
     border-radius: 4px;
 }
 
-.project-card.placeholder {
-    border-style: dashed;
-}
-
-.project-card.placeholder p.hint {
-    color: var(--text-faint);
-    font-size: 0.82rem;
-    font-style: italic;
-}
-
 /* =========================================================
-     EDUCATION
-  ========================================================= */
+   EDUCATION
+========================================================= */
 .edu-list {
     display: grid;
     gap: 22px;
@@ -890,7 +1050,7 @@ nav.links a:hover {
     margin-top: 6px;
 }
 
-@media (max-width:600px) {
+@media (max-width: 600px) {
     .edu-item {
         grid-template-columns: 1fr;
         gap: 6px;
@@ -898,8 +1058,8 @@ nav.links a:hover {
 }
 
 /* =========================================================
-     CONTACT / FOOTER
-  ========================================================= */
+   CONTACT / FOOTER
+========================================================= */
 .contact-panel {
     background: var(--bg-panel);
     border: 1px solid var(--line);
@@ -908,7 +1068,7 @@ nav.links a:hover {
     text-align: center;
 }
 
-@media (max-width:600px) {
+@media (max-width: 600px) {
     .contact-panel {
         padding: 32px 20px;
     }
@@ -920,10 +1080,8 @@ nav.links a:hover {
 
 .contact-panel .sub {
     color: var(--text-dim);
-    margin-top: 14px;
+    margin: 14px auto 0;
     max-width: 48ch;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .contact-links {
@@ -934,15 +1092,12 @@ nav.links a:hover {
     margin-top: 32px;
 }
 
-.contact-links .btn {
-    display: flex;
-    gap: 10px;
-}
-
-.contact-icon-span {
-    width: 30px;
-    height: 30px;
-    border-radius: 10px;
+.copy-status {
+    min-height: 1.4em;
+    margin-top: 18px;
+    font-family: var(--font-mono);
+    font-size: .8rem;
+    color: var(--signal);
 }
 
 footer {
@@ -951,6 +1106,20 @@ footer {
     color: var(--text-faint);
     font-family: var(--font-mono);
     font-size: 0.78rem;
+}
+
+/* =========================================================
+   MOTION
+========================================================= */
+.reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .6s ease, transform .6s ease;
+}
+
+.reveal.in {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -963,15 +1132,4 @@ footer {
         animation-iteration-count: 1 !important;
         transition-duration: 0.001ms !important;
     }
-}
-
-.reveal {
-    opacity: 0;
-    transform: translateY(18px);
-    transition: opacity .6s ease, transform .6s ease;
-}
-
-.reveal.in {
-    opacity: 1;
-    transform: translateY(0);
 }
